@@ -92,9 +92,9 @@ MMCK_LISTS_TEMP_FILES		=
 
 #### library (mmck lists): module version
 
-MMCK_LISTS_MODULES			+= lib/mmck.lists.version.scm
-MMCK_LISTS_RUNTIME_OBJECTS		+= lib/mmck.lists.version.$(OBJEXT)
-MMCK_LISTS_IMPORT_SOURCES		+= lib/mmck.lists.version.import.scm
+MMCK_LISTS_MODULES		+= lib/mmck.lists.version.scm
+MMCK_LISTS_RUNTIME_OBJECTS	+= lib/mmck.lists.version.$(OBJEXT)
+MMCK_LISTS_IMPORT_SOURCES	+= lib/mmck.lists.version.import.scm
 MMCK_LISTS_IMPORT_DEPS		+= lib/mmck.lists.version.import.$(MMCK_SOEXT)
 MMCK_LISTS_IMPORT_SHARED_LIBS	+= lib/mmck.lists.version.import.$(MMCK_SOEXT)
 MMCK_LISTS_TYPES_FILES_MODULES	+= lib/mmck.lists.version.types.scm
@@ -146,11 +146,62 @@ lib/mmck.lists.version.import.$(MMCK_SOEXT): lib/mmck.lists.version.import.scm
 	$(MMCK_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
 
 
+#### library (mmck lists): module assertions
+
+MMCK_LISTS_MODULES		+= lib/mmck.lists.assertions.scm
+MMCK_LISTS_RUNTIME_OBJECTS	+= lib/mmck.lists.assertions.$(OBJEXT)
+MMCK_LISTS_IMPORT_SOURCES	+= lib/mmck.lists.assertions.import.scm
+MMCK_LISTS_IMPORT_DEPS		+= lib/mmck.lists.assertions.import.$(MMCK_SOEXT)
+MMCK_LISTS_IMPORT_SHARED_LIBS	+= lib/mmck.lists.assertions.import.$(MMCK_SOEXT)
+MMCK_LISTS_TYPES_FILES_MODULES	+= lib/mmck.lists.assertions.types.scm
+MMCK_LISTS_TEMP_FILES		+= \
+	lib/mmck.lists.assertions.temp	\
+	lib/mmck.lists.assertions.lock	\
+	lib/mmck.lists.assertions.stamp
+
+MMCK_LISTS_ASSERTIONS_DEPS = \
+	$(MMCK_OBJECTS_DEPS)
+
+lib/mmck.lists.assertions.stamp: lib/mmck.lists.assertions.scm $(MMCK_LISTS_ASSERTIONS_DEPS)
+	@rm -f lib/mmck.lists.assertions.temp
+	@touch lib/mmck.lists.assertions.temp
+	$(MMCK_LIB_ENV) $(CSC_COMPILE_OBJECT_SHARED) lib/mmck.lists.assertions.$(OBJEXT) $(<) \
+		-emit-types-file lib/mmck.lists.assertions.types.scm
+	@$(MV) mmck.lists.assertions.import.scm lib/mmck.lists.assertions.import.scm
+	@mv -f lib/mmck.lists.assertions.temp $@
+
+lib/mmck.lists.assertions.types.scm: lib/mmck.lists.assertions.stamp
+
+lib/mmck.lists.assertions.import.scm lib/mmck.lists.assertions.$(OBJEXT): lib/mmck.lists.assertions.stamp
+	@dry=; for f in x $$MAKEFLAGS; do \
+	  case $$f in \
+	    *=*|--*);; \
+	    *n*) dry=:;; \
+	  esac; \
+	done; \
+	if test -f $@; then :; else \
+	  $$dry trap 'rm -rf lib/mmck.lists.assertions.lock lib/mmck.lists.assertions.stamp' 1 2 13 15; \
+	  if $$dry mkdir lib/mmck.lists.assertions.lock 2>/dev/null; then \
+	    $$dry rm -f lib/mmck.lists.assertions.stamp; \
+	    $(MAKE) $(AM_MAKEFLAGS) lib/mmck.lists.assertions.stamp; \
+	    $$dry rmdir lib/mmck.lists.assertions.lock; \
+	  else \
+	    while test -d lib/mmck.lists.assertions.lock && test -z "$$dry"; do \
+	      sleep 1; \
+	    done; \
+	    $$dry test -f lib/mmck.lists.assertions.stamp; exit $$?; \
+	  fi; \
+	fi
+
+lib/mmck.lists.assertions.import.$(MMCK_SOEXT): lib/mmck.lists.assertions.import.scm
+	$(MMCK_LIB_ENV) $(CSC_COMPILE_LIBRARY) $(@) $(<)
+
+
 #### library (mmck lists): module core
 
-MMCK_LISTS_MODULES			+= lib/mmck.lists.core.scm
-MMCK_LISTS_RUNTIME_OBJECTS		+= lib/mmck.lists.core.$(OBJEXT)
-MMCK_LISTS_IMPORT_SOURCES		+= lib/mmck.lists.core.import.scm
+MMCK_LISTS_MODULES		+= lib/mmck.lists.core.scm
+MMCK_LISTS_RUNTIME_OBJECTS	+= lib/mmck.lists.core.$(OBJEXT)
+MMCK_LISTS_IMPORT_SOURCES	+= lib/mmck.lists.core.import.scm
 MMCK_LISTS_IMPORT_DEPS		+= lib/mmck.lists.core.import.$(MMCK_SOEXT)
 MMCK_LISTS_IMPORT_SHARED_LIBS	+= lib/mmck.lists.core.import.$(MMCK_SOEXT)
 MMCK_LISTS_TYPES_FILES_MODULES	+= lib/mmck.lists.core.types.scm
@@ -160,6 +211,7 @@ MMCK_LISTS_TEMP_FILES		+= \
 	lib/mmck.lists.core.stamp
 
 MMCK_LISTS_CORE_DEPS = \
+	lib/mmck.lists.assertions.import.$(MMCK_SOEXT)	\
 	$(MMCK_OBJECTS_DEPS)
 
 lib/mmck.lists.core.stamp: lib/mmck.lists.core.scm $(MMCK_LISTS_CORE_DEPS)
@@ -199,9 +251,9 @@ lib/mmck.lists.core.import.$(MMCK_SOEXT): lib/mmck.lists.core.import.scm
 
 #### library (mmck lists): main module
 
-MMCK_LISTS_MODULES			+= lib/mmck.lists.scm
-MMCK_LISTS_RUNTIME_OBJECTS		+= lib/mmck.lists.$(OBJEXT)
-MMCK_LISTS_IMPORT_SOURCES		+= lib/mmck.lists.import.scm
+MMCK_LISTS_MODULES		+= lib/mmck.lists.scm
+MMCK_LISTS_RUNTIME_OBJECTS	+= lib/mmck.lists.$(OBJEXT)
+MMCK_LISTS_IMPORT_SOURCES	+= lib/mmck.lists.import.scm
 MMCK_LISTS_IMPORT_SHARED_LIBS	+= lib/mmck.lists.import.$(MMCK_SOEXT)
 MMCK_LISTS_TEMP_FILES		+= \
 	lib/mmck.lists.temp			\
