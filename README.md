@@ -9,9 +9,10 @@ language;  it  implements  functions   for  manipulating  Scheme  lists.
 CHICKEN is  a Scheme-to-C compiler  supporting the language  features as
 defined in the ``Revised^5 Report on Scheme''.
 
-The  package  targets POSIX  systems.   This  package depends  upon  the
-external packages: MMCK  Lang; MMCK Exceptional Conditions.   To run the
-tests: this package depends upon the package MMCK Checks.
+The package targets POSIX systems.  The package depends upon the CHICKEN
+eggs:  `matchable`.  This  package depends  upon the  external packages:
+MMCK Lang; MMCK Exceptional Conditions.   To run the tests: this package
+depends upon the package MMCK Checks.
 
 The package uses the GNU Autotools and it is tested, using Travis CI, on
 both Ubuntu GNU+Linux  systems and OS X systems.

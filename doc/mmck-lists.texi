@@ -181,9 +181,10 @@ This document describes version @value{VERSION} of @value{PACKAGE}, a @chicken{}
 implementing a lists handling library.  @chicken{} is a Scheme-to-C compiler supporting the language
 features as defined in the ``Revised^5 Report on Scheme''.
 
-This package supports @posix{} platforms.  This package depends upon the external packages: @mmck{}
-Lang; @mmck{} Exceptional Conditions.  To run the tests distributed with the source code: this
-package depends upon the package @mmck{} Checks.
+This package supports @posix{} platforms.  The package depends upon the @chicken{} eggs:
+@code{matchable}.  This package depends upon the external packages: @mmck{} Lang; @mmck{}
+Exceptional Conditions.  To run the tests distributed with the source code: this package depends
+upon the package @mmck{} Checks.
 
 The package installs the library @library{mmck lists} along with its import library.  To require
 the library and import its syntactic bindings in a module we can do:
