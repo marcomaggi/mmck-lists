@@ -145,9 +145,9 @@ install:
   - ./meta/travis-ci/install-texinfo.sh;
   - ./meta/travis-ci/install-chicken.sh;
   - ./meta/travis-ci/install-chicken-egg-matchable.sh;
+  - ./meta/travis-ci/install-mmck-checks.sh;
   - ./meta/travis-ci/install-mmck-exceptional-conditions.sh;
   - ./meta/travis-ci/install-mmck-lang.sh;
-  - ./meta/travis-ci/install-mmck-checks.sh;
 
 #page
 #### build scripts
